@@ -12,6 +12,12 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local-only folders (gitignored).
+    "scratch/**",
+    "reference/**",
+    "test-results/**",
+    "playwright-report/**",
+    ".claude/worktrees/**",
   ]),
 ]);
 
