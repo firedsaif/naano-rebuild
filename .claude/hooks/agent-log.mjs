@@ -21,7 +21,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const AUTHOR = "TBD";
+const AUTHOR = "firedsaif";
 const PROJECT = "naano-rebuild";
 const TOOL = "claude-code";
 
