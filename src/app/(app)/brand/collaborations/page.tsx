@@ -1,5 +1,12 @@
-import { Placeholder } from "../../placeholder";
+"use client";
 
-export default function Page() {
-  return <Placeholder title="Collaborations" description="Every booking, from invitation to payment." />;
+import { Suspense } from "react";
+import { CollaborationsView } from "@/components/collaborations/collaborations-view";
+
+export default function BrandCollaborationsPage() {
+  return (
+    <Suspense>
+      <CollaborationsView role="brand" />
+    </Suspense>
+  );
 }

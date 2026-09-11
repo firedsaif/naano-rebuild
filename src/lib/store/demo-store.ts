@@ -57,6 +57,7 @@ interface DemoActions {
 
 export type DemoState = DemoData & DemoActions;
 
+export const DEMO_STORAGE_KEY = "naano-rebuild-demo";
 const STORAGE_VERSION = 1;
 const DAY = 86_400_000;
 const rng = mulberry32(Date.now() % 2 ** 31);
@@ -237,7 +238,7 @@ export const useDemo = create<DemoState>()(
         }),
     })),
     {
-      name: "naano-rebuild-demo",
+      name: DEMO_STORAGE_KEY,
       version: STORAGE_VERSION,
       storage: createJSONStorage(() => localStorage),
       // Hydrate on the client only, after mount, so server HTML never depends on storage.
@@ -260,11 +261,14 @@ export const useDemo = create<DemoState>()(
   ),
 );
 
+// Latched: a later rehydrate (another tab saved) must not flash the loading state.
+let hydratedOnce = false;
+
 /** True once the persisted demo has been loaded in this browser. */
 export function useHydrated() {
   return useSyncExternalStore(
     (onChange) => useDemo.persist.onFinishHydration(onChange),
-    () => useDemo.persist.hasHydrated(),
+    () => (hydratedOnce ||= useDemo.persist.hasHydrated()),
     () => false,
   );
 }

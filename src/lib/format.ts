@@ -9,7 +9,11 @@ export const formatMoney = (value: number) => eur.format(value);
 export const formatMoneyExact = (value: number) => eurCents.format(value);
 export const formatCompact = (value: number) => compact.format(value);
 export const formatNumber = (value: number) => integer.format(value);
-export const formatPercent = (value: number, digits = 1) => `${value.toFixed(digits)}%`;
+/** One decimal, or two below 1% so a small CTR doesn't read as zero. */
+export const formatPercent = (value: number, digits = value > 0 && value < 1 ? 2 : 1) => `${value.toFixed(digits)}%`;
+
+/** "1 click", "3 clicks". */
+export const plural = (count: number, word: string, many = `${word}s`) => `${formatNumber(count)} ${count === 1 ? word : many}`;
 
 export const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });

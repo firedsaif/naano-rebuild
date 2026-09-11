@@ -1,4 +1,9 @@
-export default async function TrackingRedirect({ params }: PageProps<"/r/[code]">) {
+import type { Metadata } from "next";
+import { TrackedVisit } from "./tracked-visit";
+
+export const metadata: Metadata = { title: "Tracked visit · Naano rebuild" };
+
+export default async function TrackingLinkPage({ params }: PageProps<"/r/[code]">) {
   const { code } = await params;
-  return <p className="p-8">Tracking link {code}</p>;
+  return <TrackedVisit code={code} />;
 }

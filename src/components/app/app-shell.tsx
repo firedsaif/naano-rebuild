@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Building2, LogOut, Menu, RotateCcw, UserRound } from "lucide-react";
 import { toast } from "sonner";
 import { BrandAvatar, CreatorAvatar } from "@/components/common/avatars";
@@ -27,6 +27,12 @@ import { NAV, counterpart, isActive } from "./nav";
 export function AppShell({ role, children }: { role: Role; children: React.ReactNode }) {
   const hydrated = useHydrated();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // Dialogs, sheets and menus portal into <body>, so the app theme has to live there too.
+  useEffect(() => {
+    document.body.classList.add("theme-app");
+    return () => document.body.classList.remove("theme-app");
+  }, []);
 
   return (
     <div className="theme-app flex min-h-dvh bg-app text-foreground">
