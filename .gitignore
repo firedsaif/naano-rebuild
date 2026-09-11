@@ -1,0 +1,10 @@
+# Claude Code local files (.agent-logs/ is committed on purpose)
+.claude/settings.local.json
+.claude/worktrees/
+.claude/agent-log-state/
+
+# Local reference material and scratch output
+reference/
+scratch/
+test-results/
+playwright-report/
