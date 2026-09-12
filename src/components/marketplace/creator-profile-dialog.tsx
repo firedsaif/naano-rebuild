@@ -343,6 +343,9 @@ function BookingForm({ creator, onCancel, onDone }: { creator: Creator; onCancel
   return (
     <form
       className="space-y-4"
+      // noValidate: a typed amount off the slider's step would otherwise make the
+      // browser block submission silently, with no message at all.
+      noValidate
       onSubmit={(e) => {
         e.preventDefault();
         const result = book({ creatorId: creator.id, campaignId, format, price, message });
@@ -398,7 +401,7 @@ function BookingForm({ creator, onCancel, onDone }: { creator: Creator; onCancel
                 type="number"
                 min={20}
                 max={listPrice}
-                step={5}
+                step={1}
                 value={offer}
                 // Clamp here: a typed number ignores min/max, and the offer drives the CTA and summary.
                 onChange={(e) => setOffer(Math.min(listPrice, Math.max(20, Math.round(Number(e.target.value) || 20))))}

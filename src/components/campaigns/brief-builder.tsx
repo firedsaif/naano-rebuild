@@ -86,6 +86,7 @@ export function BriefBuilder() {
       <Panel className="p-6">
         <form
           className="space-y-5"
+          noValidate
           onSubmit={(e) => {
             e.preventDefault();
             const found = briefInputErrors(input);
@@ -115,7 +116,7 @@ export function BriefBuilder() {
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="budget">Budget</Label>
-              <Input id="budget" type="number" min={500} step={500} value={budget} onChange={(e) => setBudget(Number(e.target.value))} />
+              <Input id="budget" type="number" min={500} step={100} value={budget} onChange={(e) => setBudget(Math.max(0, Math.round(Number(e.target.value) || 0)))} />
               <p className="text-xs text-muted-foreground">{formatMoney(budget)} across all bookings in this campaign.</p>
             </div>
           </div>

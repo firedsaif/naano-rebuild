@@ -99,6 +99,7 @@ export function CardEditor() {
           <PanelHeader title="Edit your card" description="Changes show up in the marketplace straight away." />
           <form
             className="space-y-5 p-5"
+            noValidate
             onSubmit={(e) => {
               e.preventDefault();
               updateCard(persona.id, {
@@ -125,7 +126,7 @@ export function CardEditor() {
               <Label htmlFor="price">Price per sponsored post</Label>
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground">€</span>
-                <Input id="price" type="number" min={20} step={5} value={price} onChange={(e) => setPrice(Number(e.target.value))} className="w-32" />
+                <Input id="price" type="number" min={20} step={1} value={price} onChange={(e) => setPrice(Math.max(20, Math.round(Number(e.target.value) || 20)))} className="w-32" />
                 <span className="text-sm text-muted-foreground">
                   ≈ {formatMoney(Math.round(cpm({ pricePerPost: price, medianViews: persona.medianViews })))} CPM at {formatCompact(persona.medianViews)} median
                   views
@@ -155,7 +156,7 @@ export function CardEditor() {
                     <Label htmlFor="bundle-price" className="text-xs">
                       Bundle price
                     </Label>
-                    <Input id="bundle-price" type="number" min={20} step={5} value={bundlePrice} onChange={(e) => setBundlePrice(Number(e.target.value))} className="w-32" />
+                    <Input id="bundle-price" type="number" min={20} step={1} value={bundlePrice} onChange={(e) => setBundlePrice(Math.max(20, Math.round(Number(e.target.value) || 20)))} className="w-32" />
                   </div>
                   <p className="text-sm text-muted-foreground">
                     {formatMoney(Math.round(bundlePrice / Math.max(bundlePosts, 1)))} per post ·{" "}
