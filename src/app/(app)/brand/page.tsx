@@ -1,5 +1,7 @@
-import { Placeholder } from "../placeholder";
+"use client";
 
-export default function Page() {
-  return <Placeholder title="Overview" description="Here is what is happening for your brand." />;
+import { BrandOverview } from "@/components/overview/brand-overview";
+
+export default function BrandOverviewPage() {
+  return <BrandOverview />;
 }

@@ -1,5 +1,7 @@
-import { Placeholder } from "../../placeholder";
+"use client";
 
-export default function Page() {
-  return <Placeholder title="My card" description="How brands discover your positioning and offer." />;
+import { CardEditor } from "@/components/creator/card-editor";
+
+export default function CreatorCardPage() {
+  return <CardEditor />;
 }

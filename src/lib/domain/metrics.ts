@@ -109,6 +109,25 @@ export function campaignSummary(campaign: Campaign, collabs: Collaboration[]): C
   };
 }
 
+/** Net earnings per month for a creator, oldest first, for the earnings chart. */
+export function monthlyEarnings(collabs: Collaboration[], creatorId: Id, months = 6, now = Date.now()) {
+  const buckets = Array.from({ length: months }, (_, i) => {
+    const d = new Date(now);
+    d.setDate(1);
+    d.setMonth(d.getMonth() - (months - 1 - i));
+    return { key: `${d.getFullYear()}-${d.getMonth()}`, label: d.toLocaleDateString("en-GB", { month: "short" }), value: 0 };
+  });
+  const index = new Map(buckets.map((b, i) => [b.key, i]));
+  for (const collab of collabs) {
+    if (collab.creatorId !== creatorId || collab.status !== "completed") continue;
+    const paidAt = collab.timeline.find((t) => t.type === "completed")?.at ?? collab.updatedAt;
+    const d = new Date(paidAt);
+    const i = index.get(`${d.getFullYear()}-${d.getMonth()}`);
+    if (i !== undefined) buckets[i].value += creatorNet(collab.price);
+  }
+  return buckets;
+}
+
 /** Local calendar day, so buckets match what the visitor's clock shows. */
 const dayKey = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;

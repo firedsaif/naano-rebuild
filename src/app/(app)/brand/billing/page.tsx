@@ -1,5 +1,7 @@
-import { Placeholder } from "../../placeholder";
+"use client";
 
-export default function Page() {
-  return <Placeholder title="Billing" description="Manage your budget and invoices." />;
+import { BillingView } from "@/components/billing/billing-view";
+
+export default function BillingPage() {
+  return <BillingView />;
 }

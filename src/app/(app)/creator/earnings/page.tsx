@@ -1,5 +1,7 @@
-import { Placeholder } from "../../placeholder";
+"use client";
 
-export default function Page() {
-  return <Placeholder title="Earnings" description="Track revenue from paid collaborations and withdraw funds." />;
+import { EarningsView } from "@/components/creator/earnings-view";
+
+export default function CreatorEarningsPage() {
+  return <EarningsView />;
 }

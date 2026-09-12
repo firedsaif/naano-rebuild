@@ -1,5 +1,7 @@
-import { Placeholder } from "../placeholder";
+"use client";
 
-export default function Page() {
-  return <Placeholder title="Overview" description="Your creator activity, at a glance." />;
+import { CreatorOverview } from "@/components/creator/creator-overview";
+
+export default function CreatorOverviewPage() {
+  return <CreatorOverview />;
 }
