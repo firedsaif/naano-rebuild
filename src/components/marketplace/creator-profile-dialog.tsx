@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
+import { isOpen } from "@/lib/domain/collaboration";
 import { SERVICE_FEE_RATE, cpm, fitScore } from "@/lib/domain/rules";
 import type { Brand, Creator, Share } from "@/lib/domain/types";
 import { COUNTRY_NAMES, flag, formatCompact, formatMoney, formatNumber, formatPercent, plural } from "@/lib/format";
@@ -314,13 +315,19 @@ function BookingForm({ creator, onCancel, onDone }: { creator: Creator; onCancel
   const wallet = useBrandWallet();
   const book = useDemo((s) => s.book);
 
-  const active = useMemo(() => campaigns.filter((c) => c.status !== "completed"), [campaigns]);
-  const [campaignId, setCampaignId] = useState(active[0]?.id ?? "");
+  // A creator can't be booked twice on the same campaign, so show which are taken
+  // and start on one that's still open.
+  const collaborations = useDemo((s) => s.collaborations);
+  const active = useMemo(() => {
+    const booked = new Set(collaborations.filter((c) => c.creatorId === creator.id && isOpen(c)).map((c) => c.campaignId));
+    return campaigns.filter((c) => c.status !== "completed").map((c) => ({ campaign: c, booked: booked.has(c.id) }));
+  }, [campaigns, collaborations, creator.id]);
+  const [campaignId, setCampaignId] = useState(active.find((c) => !c.booked)?.campaign.id ?? "");
   const [format, setFormat] = useState<"single" | "bundle">("single");
   const [negotiating, setNegotiating] = useState(false);
   const listPrice = format === "bundle" && creator.bundle ? creator.bundle.price : creator.pricePerPost;
   const [offer, setOffer] = useState(listPrice);
-  const campaign = active.find((c) => c.id === campaignId);
+  const campaign = active.find((c) => c.campaign.id === campaignId)?.campaign;
   const [message, setMessage] = useState(
     `Hi ${creator.name.split(" ")[0]}, we think your audience is a great fit for this campaign. The brief has the details, and we'd love your take in your own voice.`,
   );
@@ -367,9 +374,10 @@ function BookingForm({ creator, onCancel, onDone }: { creator: Creator; onCancel
             <SelectValue placeholder="Choose a campaign" />
           </SelectTrigger>
           <SelectContent>
-            {active.map((c) => (
-              <SelectItem key={c.id} value={c.id}>
+            {active.map(({ campaign: c, booked }) => (
+              <SelectItem key={c.id} value={c.id} disabled={booked}>
                 {c.name}
+                {booked && " · already booked"}
               </SelectItem>
             ))}
           </SelectContent>
@@ -448,7 +456,9 @@ function BookingForm({ creator, onCancel, onDone }: { creator: Creator; onCancel
           Back
         </Button>
       </div>
-      <p className="text-center text-xs text-muted-foreground">{plural(active.length, "active campaign")} · the creator can accept, decline or counter.</p>
+      <p className="text-center text-xs text-muted-foreground">
+        {plural(active.filter((c) => !c.booked).length, "campaign")} open for {creator.name.split(" ")[0]} · they can accept or decline.
+      </p>
     </form>
   );
 }
