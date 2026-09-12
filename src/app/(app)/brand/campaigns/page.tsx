@@ -1,5 +1,7 @@
-import { Placeholder } from "../../placeholder";
+"use client";
 
-export default function Page() {
-  return <Placeholder title="Campaigns" description="Organise your creator work by campaign." />;
+import { CampaignsView } from "@/components/campaigns/campaigns-view";
+
+export default function CampaignsPage() {
+  return <CampaignsView />;
 }

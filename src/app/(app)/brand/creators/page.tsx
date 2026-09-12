@@ -1,5 +1,12 @@
-import { Placeholder } from "../../placeholder";
+"use client";
 
-export default function Page() {
-  return <Placeholder title="Creators" description="Find creators your buyers already trust." />;
+import { Suspense } from "react";
+import { Marketplace } from "@/components/marketplace/marketplace";
+
+export default function CreatorsPage() {
+  return (
+    <Suspense>
+      <Marketplace />
+    </Suspense>
+  );
 }

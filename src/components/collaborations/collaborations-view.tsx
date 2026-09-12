@@ -49,7 +49,39 @@ const COPY: Record<Role, { title: string; description: string }> = {
   creator: { title: "Collaborations", description: "Every step tells you where you stand, what to do, and what happens next." },
 };
 
+/** The Collaborations page: summary header plus the pipeline panel. */
 export function CollaborationsView({ role }: { role: Role }) {
+  const brandCollabs = useBrandCollaborations();
+  const personaCollabs = usePersonaCollaborations();
+  const collaborations = role === "brand" ? brandCollabs : personaCollabs;
+  const toDo = collaborations.filter((c) => needsAction(c, role)).length;
+  const money =
+    role === "brand"
+      ? `${formatMoney(collaborations.filter(holdsBudget).reduce((s, c) => s + c.price, 0))} committed`
+      : `${formatMoney(collaborations.filter((c) => isOpen(c)).reduce((s, c) => s + creatorNet(c.price), 0))} in progress`;
+
+  return (
+    <>
+      <PageHeader
+        title={COPY[role].title}
+        description={COPY[role].description}
+        actions={
+          <p className="text-sm text-muted-foreground">
+            <strong className="text-foreground">{collaborations.length}</strong> collaborations · <strong className="text-foreground">{money}</strong> ·{" "}
+            <strong className={cn(toDo > 0 ? "text-brand" : "text-foreground")}>{toDo}</strong> to do
+          </p>
+        }
+      />
+      <CollaborationsPanel role={role} />
+    </>
+  );
+}
+
+/**
+ * Filterable pipeline with the detail drawer. Pass `campaignId` to lock it to one
+ * campaign (the campaign page embeds it that way). Must render inside <Suspense>.
+ */
+export function CollaborationsPanel({ role, campaignId: lockedCampaignId }: { role: Role; campaignId?: string }) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -63,7 +95,8 @@ export function CollaborationsView({ role }: { role: Role }) {
 
   const [tab, setTab] = useState(params.get("tab") ?? "all");
   const [query, setQuery] = useState("");
-  const [campaignId, setCampaignId] = useState("all");
+  const [selectedCampaign, setCampaignId] = useState("all");
+  const campaignId = lockedCampaignId ?? selectedCampaign;
 
   const campaignName = useMemo(() => new Map(campaigns.map((c) => [c.id, c.name])), [campaigns]);
   const brandCampaigns = useMemo(() => campaigns.filter((c) => collaborations.some((x) => x.campaignId === c.id)), [campaigns, collaborations]);
@@ -86,12 +119,6 @@ export function CollaborationsView({ role }: { role: Role }) {
   const activeTab = tabs.find((t) => t.key === tab) ?? tabs[0];
   const visible = rows.filter((r) => activeTab.match(r.collab));
 
-  const toDo = collaborations.filter((c) => needsAction(c, role)).length;
-  const money =
-    role === "brand"
-      ? `${formatMoney(collaborations.filter(holdsBudget).reduce((s, c) => s + c.price, 0))} committed`
-      : `${formatMoney(collaborations.filter((c) => isOpen(c)).reduce((s, c) => s + creatorNet(c.price), 0))} in progress`;
-
   const setOpen = (id: string | null) => {
     const next = new URLSearchParams(params.toString());
     if (id) next.set("open", id);
@@ -102,17 +129,6 @@ export function CollaborationsView({ role }: { role: Role }) {
 
   return (
     <>
-      <PageHeader
-        title={COPY[role].title}
-        description={COPY[role].description}
-        actions={
-          <p className="text-sm text-muted-foreground">
-            <strong className="text-foreground">{collaborations.length}</strong> collaborations · <strong className="text-foreground">{money}</strong> ·{" "}
-            <strong className={cn(toDo > 0 ? "text-brand" : "text-foreground")}>{toDo}</strong> to do
-          </p>
-        }
-      />
-
       <Panel>
         <div className="flex flex-col gap-3 border-b p-4 sm:flex-row sm:items-center">
           <div className="relative flex-1">
@@ -125,7 +141,7 @@ export function CollaborationsView({ role }: { role: Role }) {
               aria-label="Search collaborations"
             />
           </div>
-          {role === "brand" && (
+          {role === "brand" && !lockedCampaignId && (
             <Select value={campaignId} onValueChange={setCampaignId}>
               <SelectTrigger className="h-10 sm:w-60" aria-label="Filter by campaign">
                 <SelectValue />

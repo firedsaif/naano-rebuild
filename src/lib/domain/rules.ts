@@ -25,7 +25,8 @@ export function fitScore(creator: Creator, brand: Brand): number {
   const topic = Math.min(1, topics / 2);
   const country = icp.countries.includes(creator.country) ? 1 : 0;
   const raw = 0.45 * audience + 0.3 * topic + 0.15 * seniority + 0.1 * country;
-  return Math.round(40 + 58 * Math.min(1, raw / 0.8));
+  // Spread scores across the range instead of saturating the top of the list.
+  return Math.round(40 + 58 * Math.min(1, raw));
 }
 
 function sumShares(shares: { label: string; pct: number }[], wanted: string[]) {
