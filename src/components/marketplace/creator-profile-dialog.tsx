@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { BadgeCheck, Check, ChevronDown, Clock, Star } from "lucide-react";
@@ -322,7 +323,8 @@ function BookingForm({ creator, onCancel, onDone }: { creator: Creator; onCancel
     const booked = new Set(collaborations.filter((c) => c.creatorId === creator.id && isOpen(c)).map((c) => c.campaignId));
     return campaigns.filter((c) => c.status !== "completed").map((c) => ({ campaign: c, booked: booked.has(c.id) }));
   }, [campaigns, collaborations, creator.id]);
-  const [campaignId, setCampaignId] = useState(active.find((c) => !c.booked)?.campaign.id ?? "");
+  const free = useMemo(() => active.filter((c) => !c.booked), [active]);
+  const [campaignId, setCampaignId] = useState(free[0]?.campaign.id ?? "");
   const [format, setFormat] = useState<"single" | "bundle">("single");
   const [negotiating, setNegotiating] = useState(false);
   const listPrice = format === "bundle" && creator.bundle ? creator.bundle.price : creator.pricePerPost;
@@ -452,6 +454,16 @@ function BookingForm({ creator, onCancel, onDone }: { creator: Creator; onCancel
         </p>
       )}
 
+      {free.length === 0 && (
+        <p className="rounded-xl border bg-white p-3 text-sm">
+          {creator.name.split(" ")[0]} is already booked on every active campaign.{" "}
+          <Link href="/brand/campaigns/new" className="font-semibold text-brand underline">
+            Create a campaign
+          </Link>{" "}
+          to book them again.
+        </p>
+      )}
+
       <div className="flex gap-2">
         <Button type="submit" className="flex-1" size="lg" disabled={!campaignId}>
           {negotiating ? "Send offer" : "Send invitation"} · {formatMoney(price)}
@@ -460,9 +472,11 @@ function BookingForm({ creator, onCancel, onDone }: { creator: Creator; onCancel
           Back
         </Button>
       </div>
-      <p className="text-center text-xs text-muted-foreground">
-        {plural(active.filter((c) => !c.booked).length, "campaign")} open for {creator.name.split(" ")[0]} · they can accept or decline.
-      </p>
+      {free.length > 0 && (
+        <p className="text-center text-xs text-muted-foreground">
+          {plural(free.length, "campaign")} open for {creator.name.split(" ")[0]} · they can accept or decline.
+        </p>
+      )}
     </form>
   );
 }
