@@ -19,32 +19,32 @@ Every feature and the whole loop, as checks you can walk through and mark.
 
 | # | Check | Expected | Result | Notes |
 | --- | --- | --- | --- | --- |
-| 1.1 | Open `/` | Landing page loads, no console errors | ☐ | |
-| 1.2 | Hero | Headline, subtitle, "Launch a campaign" and "See how it works" all visible | ☐ | |
-| 1.3 | Nav links: For brands, For creators, Pricing, FAQ | Each jumps to its section, the sticky header doesn't cover the heading | ☐ | |
-| 1.4 | Marketplace preview section | Shows real creators with fit % and a from-price | ☐ | |
-| 1.5 | How it works | Five steps, each readable, nothing overlapping | ☐ | |
-| 1.6 | Pricing | Two plans; "Book a campaign call" is clearly unavailable in the demo | ☐ | |
-| 1.7 | FAQ | Items expand and collapse; "Is this the real Naano?" says it's a demo rebuild, not affiliated | ☐ | |
-| 1.8 | Footer | Disclaimer line present | ☐ | |
-| 1.9 | "Try the demo" → `/login` | Two cards: I'm a brand, I'm a creator | ☐ | |
-| 1.10 | `/login` → I'm a brand | Lands on `/brand`, greeting names Tallyfox | ☐ | |
-| 1.11 | Back to `/login` → I'm a creator | Lands on `/creator`, greeting names Maya | ☐ | |
-| 1.12 | Open `/register` | Shows the same picker as `/login` | ☐ | |
+| 1.1 | Open `/` | Landing page loads, no console errors | done | |
+| 1.2 | Hero | Headline, subtitle, "Launch a campaign" and "See how it works" all visible | done | |
+| 1.3 | Nav links: For brands, For creators, Pricing, FAQ | Each jumps to its section, the sticky header doesn't cover the heading | done | |
+| 1.4 | Marketplace preview section | Shows real creators with fit % and a from-price | done | |
+| 1.5 | How it works | Five steps, each readable, nothing overlapping | done | |
+| 1.6 | Pricing | Two plans; "Book a campaign call" is clearly unavailable in the demo | done | |
+| 1.7 | FAQ | Items expand and collapse; "Is this the real Naano?" says it's a demo rebuild, not affiliated | done | |
+| 1.8 | Footer | Disclaimer line present | done | |
+| 1.9 | "Try the demo" → `/login` | Two cards: I'm a brand, I'm a creator | done | |
+| 1.10 | `/login` → I'm a brand | Lands on `/brand`, greeting names Tallyfox | done | |
+| 1.11 | Back to `/login` → I'm a creator | Lands on `/creator`, greeting names Maya | done | |
+| 1.12 | Open `/register` | Shows the same picker as `/login` | done | |
 
 ## 2. Shell, navigation and the demo itself
 
 | # | Check | Expected | Result | Notes |
 | --- | --- | --- | --- | --- |
-| 2.1 | Sidebar, brand side | Overview, Creators, Campaigns, Collaborations, Results, Billing; current page highlighted | ☐ | |
-| 2.2 | Sidebar, creator side | Overview, Collaborations, Earnings, My card | ☐ | |
-| 2.3 | Brand/Creator switch (top right) | Switches sides and keeps the section where one exists (e.g. Collaborations → Collaborations) | ☐ | |
-| 2.4 | Wallet chip, brand | Shows available budget; clicking opens Billing | ☐ | |
-| 2.5 | Wallet chip, creator | Shows available earnings; clicking opens Earnings | ☐ | |
-| 2.6 | Account menu → Reset demo data | Everything returns to the seeded state, toast confirms | ☐ | |
-| 2.7 | Account menu → Exit demo | Back to the landing page | ☐ | |
-| 2.8 | Reload any app page | Your changes survive (saved in the browser) | ☐ | |
-| 2.9 | Sidebar footer | Says data is saved in this browser, plus the "not affiliated" line | ☐ | |
+| 2.1 | Sidebar, brand side | Overview, Creators, Campaigns, Collaborations, Results, Billing; current page highlighted | done | |
+| 2.2 | Sidebar, creator side | Overview, Collaborations, Earnings, My card | done | |
+| 2.3 | Brand/Creator switch (top right) | Switches sides and keeps the section where one exists (e.g. Collaborations → Collaborations) | done | |
+| 2.4 | Wallet chip, brand | Shows available budget; clicking opens Billing | done | |
+| 2.5 | Wallet chip, creator | Shows available earnings; clicking opens Earnings | done | |
+| 2.6 | Account menu → Reset demo data | Everything returns to the seeded state, toast confirms | done | |
+| 2.7 | Account menu → Exit demo | Back to the landing page | done | |
+| 2.8 | Reload any app page | Your changes survive (saved in the browser) | done | |
+| 2.9 | Sidebar footer | Says data is saved in this browser, plus the "not affiliated" line | done | |
 
 ## 3. Brand overview (`/brand`)
 

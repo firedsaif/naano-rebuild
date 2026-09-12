@@ -64,7 +64,7 @@ export function BrandOverview() {
       </div>
 
       <div className="grid gap-5 lg:grid-cols-[1fr_20rem]">
-        <div className="space-y-5">
+        <div className="min-w-0 space-y-5">
           <Panel>
             <PanelHeader title="To do" description="Steps waiting on you." />
             {toDo.length === 0 && wallet.available > 1000 ? (

@@ -45,8 +45,9 @@ export function CreatorOverview() {
         <StatCard label="Earned all time" value={formatMoney(earnings.earned)} hint={plural(earnings.paidCount, "paid collaboration")} />
       </div>
 
+      {/* min-w-0: grid items default to min-content width, which long rows would blow past */}
       <div className="grid gap-5 lg:grid-cols-[1fr_20rem]">
-        <div className="space-y-5">
+        <div className="min-w-0 space-y-5">
           <Panel>
             <PanelHeader title="Needs your attention" description="Steps that are waiting on you." />
             {needsYou.length === 0 ? (
@@ -108,7 +109,7 @@ export function CreatorOverview() {
           </Panel>
         </div>
 
-        <div className="space-y-5">
+        <div className="min-w-0 space-y-5">
           <Panel className="p-5">
             <h2 className="text-[15px] font-bold">Your creator card</h2>
             <p className="mt-0.5 text-sm text-muted-foreground">How brands see you in the marketplace.</p>

@@ -400,7 +400,8 @@ function BookingForm({ creator, onCancel, onDone }: { creator: Creator; onCancel
                 max={listPrice}
                 step={5}
                 value={offer}
-                onChange={(e) => setOffer(Number(e.target.value))}
+                // Clamp here: a typed number ignores min/max, and the offer drives the CTA and summary.
+                onChange={(e) => setOffer(Math.min(listPrice, Math.max(20, Math.round(Number(e.target.value) || 20))))}
                 className="h-8 w-24 bg-white"
                 aria-label="Offer in euros"
               />

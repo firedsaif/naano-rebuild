@@ -143,26 +143,26 @@ function BriefForm({ brief, onSave, onCancel }: { brief: Brief; onSave: (brief: 
     >
       <h2 className="text-xl font-bold tracking-[-0.02em]">Edit the brief</h2>
 
-      <Field label="Context and objective">
-        <Textarea rows={5} value={draft.objective} onChange={(e) => set("objective", e.target.value)} />
+      <Field id="brief-objective" label="Context and objective">
+        <Textarea id="brief-objective" rows={5} value={draft.objective} onChange={(e) => set("objective", e.target.value)} />
       </Field>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Audience">
-          <Textarea rows={3} value={draft.audience} onChange={(e) => set("audience", e.target.value)} />
+        <Field id="brief-audience" label="Audience">
+          <Textarea id="brief-audience" rows={3} value={draft.audience} onChange={(e) => set("audience", e.target.value)} />
         </Field>
-        <Field label="Tone">
-          <Textarea rows={3} value={draft.tone} onChange={(e) => set("tone", e.target.value)} />
+        <Field id="brief-tone" label="Tone">
+          <Textarea id="brief-tone" rows={3} value={draft.tone} onChange={(e) => set("tone", e.target.value)} />
         </Field>
       </div>
-      <Field label="Key messages" hint="One per line">
-        <Textarea rows={3} value={draft.keyMessages.join("\n")} onChange={(e) => set("keyMessages", lines(e.target.value))} />
+      <Field id="brief-messages" label="Key messages" hint="One per line">
+        <Textarea id="brief-messages" rows={3} value={draft.keyMessages.join("\n")} onChange={(e) => set("keyMessages", lines(e.target.value))} />
       </Field>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Do" hint="One per line">
-          <Textarea rows={4} value={draft.dos.join("\n")} onChange={(e) => set("dos", lines(e.target.value))} />
+        <Field id="brief-dos" label="Do" hint="One per line">
+          <Textarea id="brief-dos" rows={4} value={draft.dos.join("\n")} onChange={(e) => set("dos", lines(e.target.value))} />
         </Field>
-        <Field label="Avoid" hint="One per line">
-          <Textarea rows={4} value={draft.donts.join("\n")} onChange={(e) => set("donts", lines(e.target.value))} />
+        <Field id="brief-donts" label="Avoid" hint="One per line">
+          <Textarea id="brief-donts" rows={4} value={draft.donts.join("\n")} onChange={(e) => set("donts", lines(e.target.value))} />
         </Field>
       </div>
 
@@ -192,11 +192,11 @@ function BriefForm({ brief, onSave, onCancel }: { brief: Brief; onSave: (brief: 
       </fieldset>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Call to action">
-          <Input value={draft.cta.label} onChange={(e) => set("cta", { ...draft.cta, label: e.target.value })} />
+        <Field id="brief-cta" label="Call to action">
+          <Input id="brief-cta" value={draft.cta.label} onChange={(e) => set("cta", { ...draft.cta, label: e.target.value })} />
         </Field>
-        <Field label="Destination link">
-          <Input type="url" value={draft.cta.url} onChange={(e) => set("cta", { ...draft.cta, url: e.target.value })} />
+        <Field id="brief-url" label="Destination link">
+          <Input id="brief-url" type="url" value={draft.cta.url} onChange={(e) => set("cta", { ...draft.cta, url: e.target.value })} />
         </Field>
       </div>
 
@@ -210,10 +210,11 @@ function BriefForm({ brief, onSave, onCancel }: { brief: Brief; onSave: (brief: 
   );
 }
 
-function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
+/** `id` must match the control inside, so the label actually labels it. */
+function Field({ id, label, hint, children }: { id: string; label: string; hint?: string; children: React.ReactNode }) {
   return (
     <div className="space-y-1.5">
-      <Label className="flex items-baseline gap-2">
+      <Label htmlFor={id} className="flex items-baseline gap-2">
         {label}
         {hint && <span className="text-xs font-normal text-muted-foreground">{hint}</span>}
       </Label>

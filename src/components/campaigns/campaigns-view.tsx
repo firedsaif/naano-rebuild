@@ -88,8 +88,9 @@ export function CampaignsView() {
 }
 
 function CampaignCard({ campaign, summary }: { campaign: Campaign; summary: ReturnType<typeof campaignSummary> }) {
+  // relative: the title's stretched link (after:inset-0) must cover this card only
   return (
-    <Panel className="flex flex-col p-5">
+    <Panel className="relative flex flex-col p-5">
       <div className="flex items-center justify-between gap-2">
         <Pill tone={CAMPAIGN_TONE[campaign.status]}>
           <span className="size-1.5 rounded-full bg-current" aria-hidden />

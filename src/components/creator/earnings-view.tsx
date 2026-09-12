@@ -85,6 +85,8 @@ export function EarningsView() {
           <p className="text-xs text-muted-foreground">available</p>
           <form
             className="mt-4 space-y-2"
+            // noValidate: show our own message instead of the browser's native bubble.
+            noValidate
             onSubmit={(e) => {
               e.preventDefault();
               const value = Number(amount) || earnings.available;
